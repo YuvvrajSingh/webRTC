@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>MAVECALL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" media="screen" href="lobby.css" />
+  </head>
+  <body>
+    <main id="lobby-container">
+      <h1 class="top-left" data-value="MAVECALL">MAVECALL</h1>
+      <div class=".top-right">
+        <div id="form-container">
+          <div id="form__container__header">
+            <p>👋 Create OR Join a Room</p>
+          </div>
+          <div>
+            <form id="join-form">
+              <input type="text" name="invite_link" required />
+              <input type="submit" value="Join Room" />
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+
+  <script>
+    let form = document.getElementById("join-form");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      let inviteCode = e.target.invite_link.value;
+      window.location = `index.html?room=${inviteCode}`;
+    });
+
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    let interval = null;
+
+    document.querySelector("h1").onmouseover = (event) => {
+      let iteration = 0;
+
+      clearInterval(interval);
+
+      interval = setInterval(() => {
+        event.target.innerText = event.target.innerText
+          .split("")
+          .map((letter, index) => {
+            if (index < iteration) {
+              return event.target.dataset.value[index];
+            }
+
+            return letters[Math.floor(Math.random() * 26)];
+          })
+          .join("");
+
+        if (iteration >= event.target.dataset.value.length) {
+          clearInterval(interval);
+        }
+
+        iteration += 1 / 3;
+      }, 50);
+    };
+  </script>
+</html>
